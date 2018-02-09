@@ -16,4 +16,6 @@ type Brand interface {
 	LastModified() int64
 	SupersededBy() []int64
 	Supersedes() []int64
+	Bytes()	     []byte
+	String()     string
 }

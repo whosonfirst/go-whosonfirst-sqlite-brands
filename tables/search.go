@@ -38,7 +38,7 @@ func NewBrandsSearchTableWithDatabase(db sqlite.Database) (sqlite.Table, error) 
 func NewBrandsSearchTable() (sqlite.Table, error) {
 
 	t := BrandsSearchTable{
-		name: "brands_search",
+		name: "search",
 	}
 
 	return &t, nil

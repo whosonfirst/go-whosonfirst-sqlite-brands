@@ -15,7 +15,7 @@ func main() {
 	driver := flag.String("driver", "sqlite3", "")
 	var dsn = flag.String("dsn", "index.db", "")
 
-	var table = flag.String("table", "brands_search", "")
+	var table = flag.String("table", "search", "")
 	var col = flag.String("column", "name", "")
 
 	flag.Parse()

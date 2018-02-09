@@ -44,7 +44,8 @@ func main() {
 
 	all := flag.Bool("all", false, "Index all tables")
 	brands := flag.Bool("brands", false, "Index the 'brands' table")
-	search := flag.Bool("search", false, "Index the 'brands_search' table")
+	sources := flag.Bool("sources", false, "Index the 'source' table")
+	search := flag.Bool("search", false, "Index the 'search' table")
 
 	live_hard := flag.Bool("live-hard-die-fast", false, "Enable various performance-related pragmas at the expense of possible (unlikely) database corruption")
 	timings := flag.Bool("timings", false, "Display timings during and after indexing")
@@ -89,12 +90,23 @@ func main() {
 		to_index = append(to_index, br)
 	}
 
+	if *sources || *all {
+
+		s, err := tables.NewBrandsSourceTableWithDatabase(db)
+
+		if err != nil {
+			logger.Fatal("failed to create 'source' table because %s", err)
+		}
+
+		to_index = append(to_index, s)
+	}
+
 	if *search || *all {
 
 		s, err := tables.NewBrandsSearchTableWithDatabase(db)
 
 		if err != nil {
-			logger.Fatal("failed to create 'brands_search' table because %s", err)
+			logger.Fatal("failed to create 'search' table because %s", err)
 		}
 
 		to_index = append(to_index, s)
