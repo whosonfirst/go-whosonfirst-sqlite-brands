@@ -46,3 +46,4 @@ fmt:
 
 bin: 	self
 	@GOPATH=$(GOPATH) go build -o bin/wof-sqlite-index-brands cmd/wof-sqlite-index-brands.go
+	@GOPATH=$(GOPATH) go build -o bin/wof-sqlite-query-brands cmd/wof-sqlite-query-brands.go

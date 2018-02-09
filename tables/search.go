@@ -10,7 +10,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-sqlite"
 	"github.com/whosonfirst/go-whosonfirst-sqlite-brands"
 	"github.com/whosonfirst/go-whosonfirst-sqlite/utils"
-	"log"
+	_ "log"
 )
 
 type BrandsSearchTable struct {
@@ -20,7 +20,7 @@ type BrandsSearchTable struct {
 
 func NewBrandsSearchTableWithDatabase(db sqlite.Database) (sqlite.Table, error) {
 
-	t, err := NewBrandsTable()
+	t, err := NewBrandsSearchTable()
 
 	if err != nil {
 		return nil, err
