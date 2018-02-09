@@ -1,6 +1,6 @@
 package tables
 
-// see the way "go-whosonfirst-sqlite-brands is `brands` and 
+// see the way "go-whosonfirst-sqlite-brands is `brands` and
 // "github.com/whosonfirst/go-whosonfirst-brands" is `wof_brands`
 // maybe this could be better... (20180206/thisisaaronland)
 
@@ -8,8 +8,8 @@ import (
 	"fmt"
 	wof_brands "github.com/whosonfirst/go-whosonfirst-brands"
 	"github.com/whosonfirst/go-whosonfirst-sqlite"
-	"github.com/whosonfirst/go-whosonfirst-sqlite/utils"
 	"github.com/whosonfirst/go-whosonfirst-sqlite-brands"
+	"github.com/whosonfirst/go-whosonfirst-sqlite/utils"
 	_ "log"
 )
 

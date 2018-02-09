@@ -8,9 +8,9 @@ import (
 	wof_index "github.com/whosonfirst/go-whosonfirst-index"
 	"github.com/whosonfirst/go-whosonfirst-log"
 	"github.com/whosonfirst/go-whosonfirst-sqlite"
+	"github.com/whosonfirst/go-whosonfirst-sqlite-brands/tables"
 	"github.com/whosonfirst/go-whosonfirst-sqlite/database"
 	"github.com/whosonfirst/go-whosonfirst-sqlite/index"
-	"github.com/whosonfirst/go-whosonfirst-sqlite-brands/tables"
 	"io"
 	"os"
 	"runtime"
@@ -41,6 +41,10 @@ func main() {
 	driver := flag.String("driver", "sqlite3", "")
 
 	mode := flag.String("mode", "files", desc_modes)
+
+	all := flag.Bool("all", false, "Index all tables")
+	brands := flag.Bool("brands", false, "Index the 'brands' table")
+	search := flag.Bool("search", false, "Index the 'brands_search' table")
 
 	live_hard := flag.Bool("live-hard-die-fast", false, "Enable various performance-related pragmas at the expense of possible (unlikely) database corruption")
 	timings := flag.Bool("timings", false, "Display timings during and after indexing")
@@ -74,13 +78,27 @@ func main() {
 
 	to_index := make([]sqlite.Table, 0)
 
-	br, err := tables.NewBrandsTableWithDatabase(db)
+	if *brands || *all {
 
-	if err != nil {
-		logger.Fatal("failed to create 'geojson' table because %s", err)
+		br, err := tables.NewBrandsTableWithDatabase(db)
+
+		if err != nil {
+			logger.Fatal("failed to create 'brands' table because %s", err)
+		}
+
+		to_index = append(to_index, br)
 	}
 
-	to_index = append(to_index, br)
+	if *search || *all {
+
+		s, err := tables.NewBrandsSearchTableWithDatabase(db)
+
+		if err != nil {
+			logger.Fatal("failed to create 'brands_search' table because %s", err)
+		}
+
+		to_index = append(to_index, s)
+	}
 
 	if len(to_index) == 0 {
 		logger.Fatal("You forgot to specify which (any) tables to index")
