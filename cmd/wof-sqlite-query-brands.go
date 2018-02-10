@@ -39,16 +39,32 @@ func main() {
 		logger.Fatal("CONN", err)
 	}
 
-	q := strings.Join(flag.Args(), " ")
+	match := fmt.Sprintf("%s MATCH ?", *col)
+	query := strings.Join(flag.Args(), " ")
 
-	sql := fmt.Sprintf("SELECT id,name FROM %s WHERE %s MATCH ?", *table, *col)
-	rows, err := conn.Query(sql, q)
+	conditions := []string{
+		match,
+	}
+
+	args := []interface{}{
+		query,
+	}
+
+	// conditions = append(conditions, "is_current LIKE ?")
+	// args = append(args, "1")
+
+	where := strings.Join(conditions, " AND ")
+
+	sql := fmt.Sprintf("SELECT id,name FROM %s WHERE %s", *table, where)
+	rows, err := conn.Query(sql, args...)
 
 	if err != nil {
 		logger.Fatal("QUERY", err)
 	}
 
 	defer rows.Close()
+
+	logger.Status("# %s", sql)
 
 	for rows.Next() {
 
@@ -61,7 +77,7 @@ func main() {
 			logger.Fatal("ID", err)
 		}
 
-		logger.Status("%s - %s %s", q, id, name)
+		logger.Status("%s %s", id, name)
 	}
 
 	err = rows.Err()
