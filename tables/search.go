@@ -50,7 +50,7 @@ func (t *BrandsSearchTable) Name() string {
 
 func (t *BrandsSearchTable) Schema() string {
 
-	schema := `CREATE VIRTUAL TABLE %s USING fts4(id, name, is_current);`
+	schema := `CREATE VIRTUAL TABLE %s USING fts4(id, name, is_current, is_ceased, is_deprecated, is_superseded);`
 
 	// this is a bit stupid really... (20170901/thisisaaronland)
 	return fmt.Sprintf(schema, t.Name())
@@ -72,6 +72,24 @@ func (t *BrandsSearchTable) IndexBrand(db sqlite.Database, b wof_brands.Brand) e
 	name := b.Name()
 
 	is_current, err := b.IsCurrent()
+
+	if err != nil {
+		return err
+	}
+
+	is_ceased, err := b.IsCeased()
+
+	if err != nil {
+		return err
+	}
+
+	is_deprecated, err := b.IsDeprecated()
+
+	if err != nil {
+		return err
+	}
+
+	is_superseded, err := b.IsSuperseded()
 
 	if err != nil {
 		return err
@@ -103,7 +121,7 @@ func (t *BrandsSearchTable) IndexBrand(db sqlite.Database, b wof_brands.Brand) e
 		return err
 	}
 
-	sql := fmt.Sprintf(`INSERT OR REPLACE INTO %s (id, name, is_current) VALUES (?, ?, ?)`, t.Name())
+	sql := fmt.Sprintf(`INSERT OR REPLACE INTO %s (id, name, is_current, is_ceased, is_deprecated, is_superseded) VALUES (?, ?, ?, ?, ?, ?)`, t.Name())
 
 	stmt, err := tx.Prepare(sql)
 
@@ -113,7 +131,7 @@ func (t *BrandsSearchTable) IndexBrand(db sqlite.Database, b wof_brands.Brand) e
 
 	defer stmt.Close()
 
-	_, err = stmt.Exec(id, name, is_current.Flag())
+	_, err = stmt.Exec(id, name, is_current.Flag(), is_ceased.Flag(), is_deprecated.Flag(), is_superseded.Flag())
 
 	if err != nil {
 		return err

@@ -26,9 +26,9 @@ build:	fmt bin
 
 deps:
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-brands"
-	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-sqlite"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-index"
 	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-log"
+	@GOPATH=$(GOPATH) go get -u "github.com/whosonfirst/go-whosonfirst-sqlite"
 	rm -rf src/github.com/mattn
 	rm -rf src/github.com/shaxbee
 	rm -rf src/github.com/whosonfirst/go-whosonfirst-sqlite/vendor/github.com/whosonfirst/go-whosonfirst-log
