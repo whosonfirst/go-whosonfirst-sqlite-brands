@@ -47,7 +47,7 @@ func main() {
 	sources := flag.Bool("sources", false, "Index the 'source' table")
 	search := flag.Bool("search", false, "Index the 'search' table")
 
-	live_hard := flag.Bool("live-hard-die-fast", false, "Enable various performance-related pragmas at the expense of possible (unlikely) database corruption")
+	live_hard := flag.Bool("live-hard-die-fast", true, "Enable various performance-related pragmas at the expense of possible (unlikely) database corruption")
 	timings := flag.Bool("timings", false, "Display timings during and after indexing")
 	var procs = flag.Int("processes", (runtime.NumCPU() * 2), "The number of concurrent processes to index data with")
 
